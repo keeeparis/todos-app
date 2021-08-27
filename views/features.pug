@@ -1,0 +1,27 @@
+include modules/header
+include modules/navbar
+
+.container
+  p To add todo into the list fill in the form below and press ENTER or Add button.
+  form(class="input-group mb-3")
+    input(type="text" class="form-control" placeholder="add Todo" autofocus)
+    button(class="btn btn-outline-secondary" type="submit" id="button-addon") Add
+  
+  p In order to remove todo from the list, click on the #[b close button] next to the todo. To mark it as finished #[b click on todo itself].
+  ul(class="list-group mb-4")
+    each val, index in result
+      li(class="list-group-item to-update", style="cursor: pointer; position: relative") 
+        p(style='margin-bottom: 0') #{index+1}. #{val.text}
+        button(class="btn btn-outline-dark" style='position: absolute; top: 0px; left: -40px') x
+  
+  p Todos that are marked as done
+  ul(class="list-group mb-4")
+    each val, index in resultDone
+      li(class='list-group-item' style='background-color: lightblue; cursor: default')
+        p(style='margin-bottom: 0') #{index+1}. #{val.text}
+  
+  button(class="btn btn-danger me-2" id='clearAll') Clear all todos
+  button(class="btn btn-warning ms-2" id='clearDone') Clear all finished todos
+
+
+include modules/footer
