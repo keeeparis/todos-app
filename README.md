@@ -1,4 +1,4 @@
-This is simple To-DO app.
+This is simple TO-DO app.
 All data is stored in mysql database.
 
 You can: 
