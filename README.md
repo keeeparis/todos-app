@@ -7,3 +7,5 @@ You can:
 3) Delete each non-finished tasks.
 4) Delete all finished tasks.
 5) Delete all tasks.
+
+https://youtu.be/byqn9ya5Syg
