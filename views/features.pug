@@ -11,14 +11,14 @@ include modules/navbar
   ul(class="list-group mb-4")
     each val, index in result
       li(class="list-group-item to-update", style="cursor: pointer; position: relative") 
-        p(style='margin-bottom: 0') #{index+1}. #{val.text}
+        p(style='margin-bottom: 0') #{index+1}. #{val.text} ----- #[span(style='font-style: italic; color: grey') #{new Date(Date.parse(val.date)).toLocaleString()} ]
         button(class="btn btn-outline-dark" style='position: absolute; top: 0px; left: -40px') x
   
-  p Todos that are marked as done
+  p Todos that are marked as #[b done]
   ul(class="list-group mb-4")
     each val, index in resultDone
       li(class='list-group-item' style='background-color: lightblue; cursor: default')
-        p(style='margin-bottom: 0') #{index+1}. #{val.text}
+        p(style='margin-bottom: 0') #{index+1}. #{val.text} ----- #[span(style='font-style: italic; color: grey') #[b done] #{new Date(Date.parse(val.date)).toLocaleString()} ]
   
   button(class="btn btn-danger me-2" id='clearAll') Clear all todos
   button(class="btn btn-warning ms-2" id='clearDone') Clear all finished todos

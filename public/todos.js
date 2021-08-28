@@ -34,7 +34,8 @@ try {
     } 
     
     async function closeToDo(elementList) {
-        let innerText = elementList.target.previousSibling.innerText.slice(3)
+        let innerText = elementList.target.previousSibling.innerText //.slice(3)
+        innerText = innerText.substring(3, innerText.indexOf("-") - 1)
         await fetch('/features/delete', { // /features-delete
             method: 'POST',
             body: JSON.stringify({
@@ -49,7 +50,14 @@ try {
     }
 
     async function markAsDone(el) {
-        let innerText = el.srcElement.innerText.slice(3)
+        // get text from target element
+        let innerText = el.srcElement.innerText //.slice(3)
+        // if I clicked on time span rewrite the innerText variable
+        if (el.currentTarget !== el.target) {
+            innerText = el.srcElement.parentElement.innerText
+        }
+        // text of todo will be from from 3rd position up to first '-' 
+        innerText = innerText.substring(3, innerText.indexOf('-') - 1)
         await fetch('/features/update', { // /features-update
             method: 'POST',
             body: JSON.stringify({

@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     const [rows, fields] = await conn.execute('select * from todos where done=0')
     const result = JSON.parse(JSON.stringify(rows))
 
-    const [rows_, fields_] = await conn.execute('select * from todos where done=1')
+    const [rows_, fields_] = await conn.execute('select * from todos where done=1 order by date')
     const resultDone = JSON.parse(JSON.stringify(rows_))
     res.render('features', {result: result, resultDone: resultDone})
 })
