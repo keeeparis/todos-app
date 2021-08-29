@@ -7,13 +7,16 @@ You can:
 3. Delete each non-finished tasks.
 4. Delete all finished tasks.
 5. Delete all tasks.
+6. Arhive todos are now stored.
+7. Searching is available.
+8. Delete all tasks from archive.
 
 https://youtu.be/byqn9ya5Syg
 
-!TODO: 
+~~!TODO:
 1. Если задача выполнена, то она сохраняется в архиве (done='2').
 2. При нажатии на кнопку, показывается весь архив.
-3. Можно выбрать поиск по дате.
+3. Можно выбрать поиск по дате.~~
 
 Optional:
 1. Добавить сохранение задач в localstorage/cookie.
