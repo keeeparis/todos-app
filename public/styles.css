@@ -1,0 +1,27 @@
+.hidden {
+    display: none;
+}
+span {
+    font-style: italic; 
+    color: grey;
+}
+p {
+    margin-bottom: 0;
+}
+li.to-update {
+    cursor: pointer; 
+    position: relative;
+}
+li.to-update button {
+    position: absolute; 
+    top: 0px; 
+    left: -40px;
+}
+li.to-mark {
+    background-color: lightblue; 
+    cursor: default;
+}
+li.to-archiv {
+    background-color: rgb(248, 202, 147); 
+    cursor: default;
+}
