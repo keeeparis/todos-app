@@ -8,20 +8,29 @@ include modules/navbar
     button(class="btn btn-outline-secondary" type="submit" id="button-addon") Add
   
   p In order to remove todo from the list, click on the #[b close button] next to the todo. To mark it as finished #[b click on todo itself].
-  ul(class="list-group mb-4")
+  ul(class="list-group auto-show mb-4")
     each val, index in result
-      li(class="list-group-item to-update", style="cursor: pointer; position: relative") 
-        p(style='margin-bottom: 0') #{index+1}. #{val.text} ----- #[span(style='font-style: italic; color: grey') #{new Date(Date.parse(val.date)).toLocaleString()} ]
-        button(class="btn btn-outline-dark" style='position: absolute; top: 0px; left: -40px') x
+      li(class="list-group-item to-update") 
+        p #{index+1}. #{val.text} ----- #[span #{new Date(Date.parse(val.date)).toLocaleString()} ]
+        button(class="btn btn-outline-dark") x
   
   p Todos that are marked as #[b done]
-  ul(class="list-group mb-4")
+  ul(class="list-group auto-show mb-4")
     each val, index in resultDone
-      li(class='list-group-item' style='background-color: lightblue; cursor: default')
-        p(style='margin-bottom: 0') #{index+1}. #{val.text} ----- #[span(style='font-style: italic; color: grey') #[b done] #{new Date(Date.parse(val.date)).toLocaleString()} ]
+      li(class='list-group-item to-mark')
+        p #{index+1}. #{val.text} ----- #[span #[b done] #{new Date(Date.parse(val.date)).toLocaleString()} ]
   
   button(class="btn btn-danger me-2" id='clearAll') Clear all todos
-  button(class="btn btn-warning ms-2" id='clearDone') Clear all finished todos
+  button(class="btn btn-warning mx-2" id='clearDone') Clear all finished todos
 
+  form(class='my-5', id='form-archiv')
+    div
+      label(for="from") Show archiv todos from
+      input(type="date" id="from" name="from" value='2021-01-01')
+      label(for="to") to
+      input(type="date" id="to" name="to" value='2021-12-31')
+      button(class="btn btn-secondary ms-2" type='submit' id='button-archiv') Show archived todos
+
+  div(id='archiv')
 
 include modules/footer
