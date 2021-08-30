@@ -112,11 +112,9 @@ try {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
-        }).then((res) => {
-            return res.json()
-        }).then((archiv) => {
-            showArchivList(archiv)
         })
+        const archivJSON = await archiv.json()
+        await showArchivList(archivJSON)
     }
 
     function showArchivList(data) {
