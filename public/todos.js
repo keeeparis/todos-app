@@ -7,7 +7,6 @@ try {
     const ulLists = document.querySelectorAll('.list-group.auto-show')
     const formArchiv = document.querySelector('#form-archiv')
 
-
     listItemsButtons.forEach(el => el.addEventListener('click', closeToDo))
     listItems.forEach(el => el.addEventListener('click', markAsDone))
     form.addEventListener('submit', ShowTodoList)
