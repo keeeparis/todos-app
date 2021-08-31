@@ -1,22 +1,22 @@
-This is simple TO-DO app.
-All data is stored in mysql database.
+<h1> This is simple TO-DO app.</h1>
+<h5>All data is stored in localstorage.</h5>
+
+<h3>Add new task</h3>
+
+Simply fill in the form and set priority for the current todo (High-red, Moderate-yellow, Low-green).
+Added tasks are ordered by the selected priority to focus on things you decided important.
+
+<h3>Delete tasks</h3>
 
 You can: 
-1. Add new task;
-2. Mark it as finished. It will be displayed on the screen.
-3. Delete each non-finished tasks.
-4. Delete all finished tasks.
+1. Delete each non-finished task.
+2. Delete all finished tasks.
 5. Delete all tasks.
-6. Arhive todos are now stored.
-7. Searching is available.
-8. Delete all tasks from archive.
+
+<h3>Archive</h3>
+
+By deleting finished todos, they are still stored in localstorage. 
+This means you can search it by selecting the timeframe when it occured.
+If you are no longer interested in archiving todos, it is possible to delete them all. However, this action is irreversible.
 
 https://youtu.be/byqn9ya5Syg
-
-~~!TODO:~~
-1. ~~Если задача выполнена, то она сохраняется в архиве (done='2').~~
-2. ~~При нажатии на кнопку, показывается весь архив.~~
-3. ~~Можно выбрать поиск по дате.~~
-
-Optional:
-1. Добавить сохранение задач в localstorage/cookie.
