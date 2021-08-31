@@ -17,11 +17,47 @@ li.to-update button {
     top: 0px; 
     left: -40px;
 }
-li.to-mark {
-    background-color: lightblue; 
+li.to-mark { 
     cursor: default;
 }
 li.to-archiv {
     background-color: rgb(248, 202, 147); 
     cursor: default;
+}
+.input-group label {
+    margin: auto;
+}
+
+li[data-priority='1'].to-update {
+    background: linear-gradient(90deg, #FFC0CB 2.7%, #fff 2.7%);
+}
+
+li[data-priority='2'].to-update {
+    background: linear-gradient(90deg, rgb(252, 243, 115) 2.7%, #fff 2.7%);
+}
+
+li[data-priority='3'].to-update {
+    background: linear-gradient(90deg, rgb(138, 255, 167) 2.7%, #fff 2.7%);
+}
+
+li[data-priority='1'].to-mark {
+    background: linear-gradient(90deg, #FFC0CB 2.7%, lightblue 2.7%);
+}
+
+li[data-priority='2'].to-mark {
+    background: linear-gradient(90deg, rgb(252, 243, 115) 2.7%, lightblue 2.7%);
+}
+
+li[data-priority='3'].to-mark {
+    background: linear-gradient(90deg, rgb(138, 255, 167) 2.7%, lightblue 2.7%);
+}
+
+li[data-priority='1'].to-archiv {
+    background: linear-gradient(90deg, #FFC0CB 2.7%, rgb(248, 202, 147) 2.7%);
+}
+li[data-priority='2'].to-archiv {
+    background: linear-gradient(90deg, rgb(252, 243, 115) 2.7%, rgb(248, 202, 147) 2.7%);
+}
+li[data-priority='3'].to-archiv {
+    background: linear-gradient(90deg, rgb(138, 255, 167) 2.7%, rgb(248, 202, 147) 2.7%);
 }
