@@ -1,129 +1,241 @@
 try {
     const form = document.querySelector('.input-group')
-    const listItemsButtons = document.querySelectorAll('.list-group-item > button')
-    const listItems = document.querySelectorAll('.list-group-item.to-update > p')
     const clearAllButton = document.querySelector('#clearAll')
     const clearDoneButton = document.querySelector('#clearDone')
-    const ulLists = document.querySelectorAll('.list-group.auto-show')
     const formArchiv = document.querySelector('#form-archiv')
 
-    listItemsButtons.forEach(el => el.addEventListener('click', closeToDo))
-    listItems.forEach(el => el.addEventListener('click', markAsDone))
-    form.addEventListener('submit', ShowTodoList)
+    form.addEventListener('submit', updateTodoList)
+    
     clearAllButton.addEventListener('click', clearAll)
     clearDoneButton.addEventListener('click', clearDone)
     formArchiv.addEventListener('submit', showArchiv)
 
-    async function ShowTodoList(evt) {
-        evt.preventDefault()
+    /* -------------------------------------------------------- */
+    
+    // let todos_sort_date = {}
+    let todos_list = []
 
+    // if (localStorage.getItem('todos_sort_date')) {
+    //     todos_sort_date = JSON.parse(localStorage.getItem('todos_sort_date'))
+    // }
+
+    if (localStorage.getItem('todos_list')) {
+        todos_list = JSON.parse(localStorage.getItem('todos_list'))
+    }
+
+
+    function updateLocalStorage() {
+        // const sortObject = o => Object.keys(o).sort((a, b) => b-a).reduce((r, k) => (r[k] = o[k], r), {})
+        // localStorage.setItem('todos_sort_date', JSON.stringify(sortObject(todos_sort_date)))
+
+        const sortList = el => el.sort((a, b) => a['priority'] - b['priority'])
+        localStorage.setItem('todos_list', JSON.stringify(sortList(todos_list)))
+    }
+
+    function createTODO(data, priority) {
+        const todo = {
+            'text': data,
+            'done': 0,
+            'date': Date.now(),
+            'id': Math.floor(Math.random() * 1000000000),
+            'priority': priority
+        }
+        // todos_sort_date[todo['date']] = todo
+        todos_list.push(todo)
+    }
+
+    function showTodoList() {
+        let showNotDoneDiv = document.querySelector('#showNotDone')
+        let out = `<p>In order to remove todo from the list, click on the <b>close button</b> next to the todo. To mark it as finished <b>click on todo itself</b>.`
+        out += `<ul class='list-group auto-show mb-4'>`
+        let i = 0
+
+        /* for object */
+        // for (let [key, value] of Object.entries(todos_sort_date)) {
+        //     if (value['done'] == 0) {
+        //         out += `<li class="list-group-item to-update">`
+        //         out += `<p>${i+1}. ${value['text']} ----- <span>${new Date(value['date']).toLocaleString()}</span></p>`
+        //         out += `<button class="btn btn-outline-dark" data-id='${value['id']}'>x</button></li>`
+        //         i++
+        //     }
+        // }
+
+        /* for list */
+        for (let el of todos_list) {
+            if (el['done'] == 0) {
+                out += `<li class="list-group-item to-update" data-priority='${el['priority']}'>`
+                out += `<p>${i+1}. &nbsp; ${el['text']} ----- <span>${new Date(el['date']).toLocaleString()}</span></p>`
+                out += `<button class="btn btn-outline-dark" data-id='${el['id']}'>x</button></li>`
+                i++
+            }
+        }
+        out += `</ul>`
+        showNotDoneDiv.innerHTML = out
+
+        // close button
+        const listItemsButtons = document.querySelectorAll('.list-group-item > button')
+        listItemsButtons.forEach(el => el.addEventListener('click', closeToDo))
+
+        // mark finished
+        // const listItems = document.querySelectorAll('.list-group-item.to-update > p')
+        const listItems = document.querySelectorAll('.list-group-item.to-update')
+        listItems.forEach(el => el.addEventListener('click', markAsDone))
+
+    } 
+
+    function updateTodoList(evt) {
+        evt.preventDefault()
         let input = document.querySelector('.form-control').value
+        let priority = document.querySelector('#priority').value
         if (input.length == 0) {
             return false
         }
-
-        await fetch('/features', {
-            method: 'POST',
-            body: JSON.stringify({
-                'input': input
-            }),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
+        createTODO(input, priority)
+        updateLocalStorage()
         window.location.href = '/features'
-    } 
+    }
     
-    async function closeToDo(elementList) {
-        let innerText = elementList.target.previousSibling.innerText //.slice(3)
-        innerText = innerText.substring(3, innerText.indexOf("-") - 1)
-        await fetch('/features/delete', { // /features-delete
-            method: 'POST',
-            body: JSON.stringify({
-                'deleteElement': innerText
-            }),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+    function closeToDo(elementList) {
+        let innerText = elementList.target.previousSibling.innerText
+        innerText = innerText.substring(5, innerText.indexOf("-") - 1)
+        let buttonId = elementList.srcElement.dataset.id
+
+        /* for object */
+        // for (let [key, value] of Object.entries(todos_sort_date)) {
+        //     if (value['text'] == innerText && value['id'] == buttonId) {
+        //         delete todos_sort_date[key]
+        //     }
+        // }
+
+        /* for list */
+        for (let el of todos_list) {
+            if (el['text'] == innerText && el['id'] == buttonId) {
+                let index = todos_list.indexOf(el)
+                todos_list.splice(index, 1)
             }
-        })
+        }
+
+        updateLocalStorage()
         window.location.href = '/features'
     }
 
-    async function markAsDone(el) {
-        // get text from target element
-        let innerText = el.srcElement.innerText //.slice(3)
-        // if I clicked on time span rewrite the innerText variable
+    function markAsDone(el) {
+        let innerText = el.srcElement.innerText 
         if (el.currentTarget !== el.target) {
             innerText = el.srcElement.parentElement.innerText
         }
-        // text of todo will be from from 3rd position up to first '-' 
-        innerText = innerText.substring(3, innerText.indexOf('-') - 1)
-        await fetch('/features/update', { // /features-update
-            method: 'POST',
-            body: JSON.stringify({
-                'element': innerText
-            }),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+        innerText = innerText.substring(5, innerText.indexOf('-') - 1)
+
+        /* for object */
+        // for (let [key, value] of Object.entries(todos_sort_date)) {
+        //     if (value['text'] == innerText) {
+        //         value['done'] = 1
+        //         value['date'] = Date.now()
+        //         let newKey = Date.now()
+        //         todos_sort_date[newKey] = value
+        //         delete todos_sort_date[key]
+        //     }
+        // }
+
+        /* for list */
+        for (let el of todos_list) {
+            if (el['text'] == innerText && el['done'] == 0) {
+                el['done'] = 1
+                el['date'] = Date.now()
+            }
+        }
+
+        updateLocalStorage()
+        window.location.href = '/features'
+    }
+
+    function showFinishedTodoList() {
+        let showDoneDiv = document.querySelector('#showDone')
+        let out = `<p>Todos that are marked as <b>done</b></p>`
+            out += `<ul class='list-group auto-show mb-4'>`
+        let i = 0
+
+        /* for object */
+        // for (let [key, value] of Object.entries(todos_sort_date)) {
+        //     if (value['done'] == 1) {
+        //         out += `<li class="list-group-item to-mark">`
+        //         out += `<p>${i+1}. &nbsp; ${value['text']} ----- <span><b>done</b> ${new Date(value['date']).toLocaleString()}</span></p></li>`
+        //         i++
+        //     }
+        // }
+
+        /* for list */
+        for (let el of todos_list) {
+            if (el['done'] == 1) {
+                out += `<li class="list-group-item to-mark" data-priority='${el['priority']}'>`
+                out += `<p>${i+1}. &nbsp; ${el['text']} ----- <span><b>done</b> ${new Date(el['date']).toLocaleString()}</span></p></li>`
+                i++
+            }
+        }
+
+        out += `</ul>`
+        showDoneDiv.innerHTML = out
+
+        // hide help-text
+        hideHelpText()
+    }
+
+    function clearAll() {
+        for (let i=0;i<todos_list.length; i++) {
+            if (todos_list[i]['done'] == 1) {
+                todos_list[i]['done'] = 2
+            } else if (todos_list[i]['done'] == 0) {
+                todos_list.splice(i, 1)
+                i--
+            }
+        }
+        updateLocalStorage()
+        window.location.href = '/features'
+    }
+
+    function clearDone() {
+        for (let el of todos_list) {
+            if (el['done'] == 1) {
+                el['done'] = 2
+            }
+        }
+        updateLocalStorage()
+        window.location.href = '/features'
+    }
+
+    function hideHelpText() {
+        const ulLists = document.querySelectorAll('.list-group.auto-show')
+        ulLists.forEach(ul => {
+            if (ul.children.length == 0) {
+                ul.previousSibling.style.display = 'none'
+            } else {
+                ul.previousSibling.style.display = 'block'
             }
         })
-        window.location.href = '/features'
     }
+    
 
-    async function clearAll(el) {
-        await fetch('/features/clear-all', { // features-clear-all
-            method: 'POST'
-        })
-        window.location.href = '/features'
-    }
-
-    async function clearDone(el) {
-        await fetch('/features/clear-done', { // features-clear-done
-            method: 'POST'
-        })
-        window.location.href = '/features'
-    }
-
-    ulLists.forEach(ul => {
-        if (ul.children.length == 0) {
-            ul.previousSibling.style.display = 'none'
-        } else {
-            ul.previousSibling.style.display = 'block'
-        }
-    })
-
-    async function showArchiv(event) {
+    function showArchiv(event) {
         event.preventDefault()
 
-        const from = document.querySelector('#from').value
-        const to = document.querySelector('#to').value
-        
-        const archiv = await fetch('/features/archiv', {
-            method: 'POST',
-            body: JSON.stringify({
-                'from' : from,
-                'to' : to
-            }),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        const archivJSON = await archiv.json()
-        await showArchivList(archivJSON)
-    }
-
-    function showArchivList(data) {
+        const from = Date.parse(document.querySelector('#from').value)
+        const to = Date.parse(document.querySelector('#to').value)
         const archiv = document.querySelector('#archiv')
+
         let out = `<ul class='list-group list-archiv my-4'>`
-        for (let i=0; i<data.length; i++) {
-            out += `<li class='list-group-item to-archiv'>
-            <p> ${i+1}. ${data[i]['text']} ----- <span><b>done</b> 
-            ${new Date(Date.parse(data[i]['date'])).toLocaleString()}</span></p></li>`
+        
+        for (let i=0;i<todos_list.length;i++) {
+            if (todos_list[i]['date'] >= from && todos_list[i]['date'] <= to) {
+                out += `<li class='list-group-item to-archiv' data-priority='${todos_list[i]['priority']}'>
+                        <p> ${i+1}. &nbsp; ${todos_list[i]['text']} ----- <span><b>done</b>
+                        ${new Date(todos_list[i]['date']).toLocaleString()}</span></p></li>`
+            }
         }
+        // for (let i=0; i<data.length; i++) {
+        //     out += `<li class='list-group-item to-archiv'>
+        //     <p> ${i+1}. ${data[i]['text']} ----- <span><b>done</b> 
+        //     ${new Date(Date.parse(data[i]['date'])).toLocaleString()}</span></p></li>`
+        // }
         out += `</ul>`
         out += `<div class='delete-archiv-precautions'><button class='btn btn-outline-danger' id='archiv-delete'>Delete all archiv todos</button>
         <p><b>Note</b>: this action is irreversible!</p>`
@@ -133,10 +245,14 @@ try {
         showDeleteArchivButton()
     }
 
-    async function deleteAllArchiv() {
-        await fetch('/features/archiv-delete', {
-            method: 'POST'
-        })
+    function deleteAllArchiv() {
+        for (let i=0;i<todos_list.length; i++) {
+            if (todos_list[i]['done'] == 2) {
+                todos_list.splice(i, 1)
+                i--
+            }
+        }
+        updateLocalStorage()
         window.location.href = '/features'
     }
 
@@ -144,12 +260,15 @@ try {
         let archiv = document.querySelector('#archiv')
         let div = document.querySelector('.delete-archiv-precautions')
         if (archiv.firstChild.children.length == 0) {
-            div.style.display = 'none'
+            // div.style.display = 'none'
+            div.innerHTML = 'Записей за выбранные даты нет'
         } else {
             div.style.display = 'block'
         }
     }
 
+    showTodoList()
+    showFinishedTodoList()
 
 } catch (e) {
     console.log(e.message)

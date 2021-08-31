@@ -10,22 +10,22 @@ const mysqlConfig = {
     database: 'test1'
 }
 
-router.get('/', async (req, res) => {
-    const conn = await mysql.createConnection(mysqlConfig)
-    const [rows, fields] = await conn.execute('select * from todos where done=0')
-    const result = JSON.parse(JSON.stringify(rows))
+router.get('/', (req, res) => {
+    // const conn = await mysql.createConnection(mysqlConfig)
+    // const [rows, fields] = await conn.execute('select * from todos where done=0')
+    // const result = JSON.parse(JSON.stringify(rows))
 
-    const [rows_, fields_] = await conn.execute('select * from todos where done=1 order by date DESC')
-    const resultDone = JSON.parse(JSON.stringify(rows_))
+    // const [rows_, fields_] = await conn.execute('select * from todos where done=1 order by date DESC')
+    // const resultDone = JSON.parse(JSON.stringify(rows_))
 
-    const [rows__, fields__] = await conn.execute('select * from todos_archiv order by date DESC')
-    const archiv = JSON.parse(JSON.stringify(rows__))
-    res.render('features', {result: result, resultDone: resultDone, archiv: archiv})
+    // const [rows__, fields__] = await conn.execute('select * from todos_archiv order by date DESC')
+    // const archiv = JSON.parse(JSON.stringify(rows__))
+    res.render('features')
 })
 
 router.post('/', async (req, res) => {
-    const conn = await mysql.createConnection(mysqlConfig)
-    await conn.execute(`insert into todos(text) values("${req.body.input}")`)
+    // const conn = await mysql.createConnection(mysqlConfig)
+    // await conn.execute(`insert into todos(text) values("${req.body.input}")`)
     res.end('/')
 })
 
