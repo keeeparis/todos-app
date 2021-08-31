@@ -12,12 +12,7 @@ try {
 
     /* -------------------------------------------------------- */
     
-    // let todos_sort_date = {}
     let todos_list = []
-
-    // if (localStorage.getItem('todos_sort_date')) {
-    //     todos_sort_date = JSON.parse(localStorage.getItem('todos_sort_date'))
-    // }
 
     if (localStorage.getItem('todos_list')) {
         todos_list = JSON.parse(localStorage.getItem('todos_list'))
@@ -25,9 +20,6 @@ try {
 
 
     function updateLocalStorage() {
-        // const sortObject = o => Object.keys(o).sort((a, b) => b-a).reduce((r, k) => (r[k] = o[k], r), {})
-        // localStorage.setItem('todos_sort_date', JSON.stringify(sortObject(todos_sort_date)))
-
         const sortList = el => el.sort((a, b) => a['priority'] - b['priority'])
         localStorage.setItem('todos_list', JSON.stringify(sortList(todos_list)))
     }
@@ -40,7 +32,6 @@ try {
             'id': Math.floor(Math.random() * 1000000000),
             'priority': priority
         }
-        // todos_sort_date[todo['date']] = todo
         todos_list.push(todo)
     }
 
@@ -50,17 +41,6 @@ try {
         out += `<ul class='list-group auto-show mb-4'>`
         let i = 0
 
-        /* for object */
-        // for (let [key, value] of Object.entries(todos_sort_date)) {
-        //     if (value['done'] == 0) {
-        //         out += `<li class="list-group-item to-update">`
-        //         out += `<p>${i+1}. ${value['text']} ----- <span>${new Date(value['date']).toLocaleString()}</span></p>`
-        //         out += `<button class="btn btn-outline-dark" data-id='${value['id']}'>x</button></li>`
-        //         i++
-        //     }
-        // }
-
-        /* for list */
         for (let el of todos_list) {
             if (el['done'] == 0) {
                 out += `<li class="list-group-item to-update" data-priority='${el['priority']}'>`
@@ -69,6 +49,7 @@ try {
                 i++
             }
         }
+
         out += `</ul>`
         showNotDoneDiv.innerHTML = out
 
@@ -77,19 +58,19 @@ try {
         listItemsButtons.forEach(el => el.addEventListener('click', closeToDo))
 
         // mark finished
-        // const listItems = document.querySelectorAll('.list-group-item.to-update > p')
         const listItems = document.querySelectorAll('.list-group-item.to-update')
         listItems.forEach(el => el.addEventListener('click', markAsDone))
-
     } 
 
     function updateTodoList(evt) {
         evt.preventDefault()
         let input = document.querySelector('.form-control').value
         let priority = document.querySelector('#priority').value
+        
         if (input.length == 0) {
             return false
         }
+        
         createTODO(input, priority)
         updateLocalStorage()
         window.location.href = '/features'
@@ -100,14 +81,6 @@ try {
         innerText = innerText.substring(5, innerText.indexOf("-") - 1)
         let buttonId = elementList.srcElement.dataset.id
 
-        /* for object */
-        // for (let [key, value] of Object.entries(todos_sort_date)) {
-        //     if (value['text'] == innerText && value['id'] == buttonId) {
-        //         delete todos_sort_date[key]
-        //     }
-        // }
-
-        /* for list */
         for (let el of todos_list) {
             if (el['text'] == innerText && el['id'] == buttonId) {
                 let index = todos_list.indexOf(el)
@@ -126,18 +99,6 @@ try {
         }
         innerText = innerText.substring(5, innerText.indexOf('-') - 1)
 
-        /* for object */
-        // for (let [key, value] of Object.entries(todos_sort_date)) {
-        //     if (value['text'] == innerText) {
-        //         value['done'] = 1
-        //         value['date'] = Date.now()
-        //         let newKey = Date.now()
-        //         todos_sort_date[newKey] = value
-        //         delete todos_sort_date[key]
-        //     }
-        // }
-
-        /* for list */
         for (let el of todos_list) {
             if (el['text'] == innerText && el['done'] == 0) {
                 el['done'] = 1
@@ -155,16 +116,6 @@ try {
             out += `<ul class='list-group auto-show mb-4'>`
         let i = 0
 
-        /* for object */
-        // for (let [key, value] of Object.entries(todos_sort_date)) {
-        //     if (value['done'] == 1) {
-        //         out += `<li class="list-group-item to-mark">`
-        //         out += `<p>${i+1}. &nbsp; ${value['text']} ----- <span><b>done</b> ${new Date(value['date']).toLocaleString()}</span></p></li>`
-        //         i++
-        //     }
-        // }
-
-        /* for list */
         for (let el of todos_list) {
             if (el['done'] == 1) {
                 out += `<li class="list-group-item to-mark" data-priority='${el['priority']}'>`
@@ -189,6 +140,7 @@ try {
                 i--
             }
         }
+
         updateLocalStorage()
         window.location.href = '/features'
     }
@@ -199,12 +151,14 @@ try {
                 el['done'] = 2
             }
         }
+
         updateLocalStorage()
         window.location.href = '/features'
     }
 
     function hideHelpText() {
         const ulLists = document.querySelectorAll('.list-group.auto-show')
+        
         ulLists.forEach(ul => {
             if (ul.children.length == 0) {
                 ul.previousSibling.style.display = 'none'
@@ -231,15 +185,12 @@ try {
                         ${new Date(todos_list[i]['date']).toLocaleString()}</span></p></li>`
             }
         }
-        // for (let i=0; i<data.length; i++) {
-        //     out += `<li class='list-group-item to-archiv'>
-        //     <p> ${i+1}. ${data[i]['text']} ----- <span><b>done</b> 
-        //     ${new Date(Date.parse(data[i]['date'])).toLocaleString()}</span></p></li>`
-        // }
+
         out += `</ul>`
         out += `<div class='delete-archiv-precautions'><button class='btn btn-outline-danger' id='archiv-delete'>Delete all archiv todos</button>
         <p><b>Note</b>: this action is irreversible!</p>`
         archiv.innerHTML = out
+        
         const deleteArchiv = document.querySelector('#archiv-delete')
         deleteArchiv.addEventListener('click', deleteAllArchiv)
         showDeleteArchivButton()
@@ -252,6 +203,7 @@ try {
                 i--
             }
         }
+
         updateLocalStorage()
         window.location.href = '/features'
     }
@@ -259,6 +211,7 @@ try {
     function showDeleteArchivButton() {
         let archiv = document.querySelector('#archiv')
         let div = document.querySelector('.delete-archiv-precautions')
+        
         if (archiv.firstChild.children.length == 0) {
             // div.style.display = 'none'
             div.innerHTML = 'Записей за выбранные даты нет'
