@@ -19,4 +19,5 @@ By deleting finished todos, they are still stored in localstorage.
 This means you can search it by selecting the timeframe when it occured.
 If you are no longer interested in archiving todos, it is possible to delete them all. However, this action is irreversible.
 
+https://keeeparis.github.io
 https://youtu.be/byqn9ya5Syg
