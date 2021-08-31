@@ -4,7 +4,7 @@
 <h3>Add new task</h3>
 
 Simply fill in the form and set priority for the current todo (High-red, Moderate-yellow, Low-green).
-Added tasks are ordered by the selected priority to focus on things you decided important.
+Added tasks are ordered by the selected priority to focus on things you decide important.
 
 <h3>Delete tasks</h3>
 
