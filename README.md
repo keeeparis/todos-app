@@ -11,9 +11,9 @@
     <li> Arhive todos are now stored.</li>
     <li> Searching is available.</li>
     <li> Delete all tasks from archive.</li>
-</ul>
+</ol>
 
-https://youtu.be/byqn9ya5Syg
+<i>https://youtu.be/byqn9ya5Syg<i>
 
 <h3>Optional:</h3>
 1. TODO-app with localstorage is in another branch.
