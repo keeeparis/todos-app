@@ -13,7 +13,7 @@
     <li> Delete all tasks from archive.</li>
 </ol>
 
-<i>https://youtu.be/byqn9ya5Syg<i>
+<i>https://youtu.be/byqn9ya5Syg</i>
 
 <h3>Optional:</h3>
 1. TODO-app with localstorage is in another branch.
