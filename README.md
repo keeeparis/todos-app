@@ -2,15 +2,15 @@
 <h6>All data is stored in mysql database.</h6>
 
 <h3>You can:</h3>
-<ul>
-    <li> 1. Add new task;</li>
-    <li> 2. Mark it as finished. It will be displayed on the screen.</li>
-    <li> 3. Delete each non-finished tasks.</li>
-    <li> 4. Delete all finished tasks.</li>
-    <li> 5. Delete all tasks.</li>
-    <li> 6. Arhive todos are now stored.</li>
-    <li> 7. Searching is available.</li>
-<li> 8. Delete all tasks from archive.</li>
+<ol>
+    <li> Add new task;</li>
+    <li> Mark it as finished. It will be displayed on the screen.</li>
+    <li> Delete each non-finished tasks.</li>
+    <li> Delete all finished tasks.</li>
+    <li> Delete all tasks.</li>
+    <li> Arhive todos are now stored.</li>
+    <li> Searching is available.</li>
+    <li> Delete all tasks from archive.</li>
 </ul>
 
 https://youtu.be/byqn9ya5Syg
