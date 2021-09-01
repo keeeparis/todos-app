@@ -16,4 +16,5 @@
 <i>https://youtu.be/byqn9ya5Syg</i>
 
 <h3>Optional:</h3>
-1. TODO-app with localstorage is in another branch.
+
+<i>TODO-app with localstorage is in another branch.</i>
