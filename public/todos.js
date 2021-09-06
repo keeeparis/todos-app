@@ -53,13 +53,21 @@ try {
         out += `</ul>`
         showNotDoneDiv.innerHTML = out
 
-        // close button
-        const listItemsButtons = document.querySelectorAll('.list-group-item > button')
-        listItemsButtons.forEach(el => el.addEventListener('click', closeToDo))
+        document.querySelector('#showNotDone ul').addEventListener('click', (event) => {
+            if (event.target.nodeName == 'BUTTON') {
+                closeToDo(event)
+            } else {
+                markAsDone(event)
+            }
+        })
 
-        // mark finished
-        const listItems = document.querySelectorAll('.list-group-item.to-update')
-        listItems.forEach(el => el.addEventListener('click', markAsDone))
+        // close button
+        // const listItemsButtons = document.querySelectorAll('.list-group-item > button')
+        // listItemsButtons.forEach(el => el.addEventListener('click', closeToDo))
+
+        // // mark finished
+        // const listItems = document.querySelectorAll('.list-group-item.to-update')
+        // listItems.forEach(el => el.addEventListener('click', markAsDone))
     } 
 
     function updateTodoList(evt) {
@@ -168,7 +176,6 @@ try {
         })
     }
     
-
     function showArchiv(event) {
         event.preventDefault()
 
